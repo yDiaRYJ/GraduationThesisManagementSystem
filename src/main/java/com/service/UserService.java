@@ -27,7 +27,7 @@ public class UserService {
         this.userMapper.delete(id);
     }
 
-    public void createUser(User user) {
+    public void addUser(User user) {
         userMapper.insertUser(user);
     }
 }
