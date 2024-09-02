@@ -1,11 +1,33 @@
 package com.service;
 
 import com.entity.User;
+import com.mapper.UserMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface UserService {
-    List<User> getAllUsers();
-    void deleteUser(Integer id);
-    public void createUser(User user);
+@Service
+@Transactional
+public class UserService {
+    //注入用户 Mapper
+    private final UserMapper userMapper;
+
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+
+    public List<User> getAllUsers(){
+        return this.userMapper.getAllUsers();
+    }
+
+    public void deleteUser(Integer id){
+        System.out.println("删除了id为 "+id+" 的用户");
+        this.userMapper.delete(id);
+    }
+
+    public void createUser(User user) {
+        userMapper.insertUser(user);
+    }
 }

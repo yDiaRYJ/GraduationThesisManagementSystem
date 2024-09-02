@@ -10,10 +10,10 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Select("select * from tb_user")
+    @Select("select * from t_user")
     List<User> getAllUsers();
-    @Delete("DELETE FROM tb_user WHERE id = #{id}")
+    @Delete("DELETE FROM t_user WHERE user_id = #{id}")
     void delete(Integer id);
-    @Insert("INSERT INTO tb_user (id, username, address) VALUES (#{id}, #{username}, #{address})")
+    @Insert("INSERT INTO t_user (id, username, address) VALUES (#{id}, #{username}, #{address})")
     void insertUser(User user);
 }

@@ -1,37 +1,52 @@
 package com.entity;
 
 public class User {
-    private int ID;
-    private String username;
-    private String address;
 
-    public User(int ID, String username, String address) {
-        this.ID = ID;
-        this.username = username;
-        this.address = address;
+    private String userId;
+    private String userName;
+    private String userPassword;
+    private int userType;
+
+    // Constructors
+    public User() {}
+
+    public User(String userId, String userName, String userPassword, int userType) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userType = userType;
     }
 
-    public int getID() {
-        return ID;
+    // Getters and Setters
+    public String getUserId() {
+        return userId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 }
