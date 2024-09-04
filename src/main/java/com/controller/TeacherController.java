@@ -1,8 +1,7 @@
 package com.controller;
 
-import com.entity.Topic;
-import com.entity.User;
-import com.entity.UserAssociation;
+import com.entity.*;
+import com.service.StudentStatusService;
 import com.service.TopicService;
 import com.service.UserAssociationService;
 import com.service.UserService;
@@ -26,6 +25,8 @@ public class TeacherController {
     private UserAssociationService userAssociationService;
     @Autowired
     private TopicService topicService;
+    @Autowired
+    private StudentStatusService studentStatusService;
 
     @PostMapping("/teacherLogin")
     public ResponseEntity<Map<String, Object>> loginTeacher(
@@ -61,7 +62,10 @@ public class TeacherController {
         List<User> userList = new ArrayList<>();
 
         for (UserAssociation userAssociation: userAssociationList) {
-            userList.add(this.userService.getUserById(userAssociation.getStudentId()));
+            User user = this.userService.getUserById(userAssociation.getStudentId());
+            int studentStatus = studentStatusService.getStudentStatusByStudentId(user.getUserId()).getStudentStatus();
+            Student student = new Student(user, studentStatus);
+            userList.add(student);
         }
         return userList;
     }
@@ -118,9 +122,20 @@ public class TeacherController {
         Topic topic = topicService.getTopicByTopicId(topicId);
         if (topic != null) {
             if (isPass) {
+                // 设置选题状态
                 topic.setTopicStatus(2);
+                // 设置学生状态
+                User user = userService.getUserById(topic.getStudentId());
+                StudentStatus studentStatus = studentStatusService.getStudentStatusByStudentId(user.getUserId());
+                studentStatus.setStudentStatus(1);
+                studentStatusService.updateStudentStatus(studentStatus);
             } else {
                 topic.setTopicStatus(3);
+                // 设置学生状态
+                User user = userService.getUserById(topic.getStudentId());
+                StudentStatus studentStatus = studentStatusService.getStudentStatusByStudentId(user.getUserId());
+                studentStatus.setStudentStatus(0);
+                studentStatusService.updateStudentStatus(studentStatus);
             }
             topicService.updateTopic(topic);
             response.put("success", true);
