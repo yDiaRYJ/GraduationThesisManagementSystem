@@ -46,6 +46,7 @@ public class UserController {
             queryUser.setUserPassword(newPassword);
             userService.updateUser(queryUser);
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", queryUser);
         } else {
             response.put("success", false);

@@ -1,7 +1,10 @@
 package com.controller;
 
+import com.entity.Student;
+import com.entity.StudentStatus;
 import com.entity.User;
 import com.entity.UserAssociation;
+import com.service.StudentStatusService;
 import com.service.UserAssociationService;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private UserAssociationService userAssociationService;
+    @Autowired
+    private StudentStatusService studentStatusService;
 
     @PostMapping("/adminLogin")
     public ResponseEntity<Map<String, Object>> loginAdmin(
@@ -40,6 +45,7 @@ public class AdminController {
             } else {
                 if (queryUser.getUserPassword().equals(password)) {
                     response.put("success", true);
+                    response.put("code", 200);
                     response.put("message", queryUser);
                 } else {
                     response.put("success", false);
@@ -63,6 +69,7 @@ public class AdminController {
             User user = new User(userId, username, password, 0);
             userService.addUser(user);
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", user);
         } else {
             response.put("success", false);
@@ -85,6 +92,7 @@ public class AdminController {
             User user = new User(userId, username, password, 1);
             userService.addUser(user);
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", user);
         } else {
             response.put("success", false);
@@ -104,10 +112,17 @@ public class AdminController {
 
         User queryUser = userService.getUserById(userId);
         if (queryUser == null) {
+            // 添加用户
             User user = new User(userId, username, password, 2);
             userService.addUser(user);
+            // 添加studentStatus
+            StudentStatus studentStatus = new StudentStatus(userId, 0);
+            studentStatusService.addStudentStatus(studentStatus);
+            // 构造返回值
+            Student student = new Student(user, 0);
             response.put("success", true);
-            response.put("message", user);
+            response.put("code", 200);
+            response.put("message", student);
         } else {
             response.put("success", false);
             response.put("message", "user already exists!");
@@ -126,6 +141,7 @@ public class AdminController {
             UserAssociation userAssociation = new UserAssociation(studentId, teacherId);
             userAssociationService.addUserAssociation(userAssociation);
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", "add userAssociation successful!");
         } else {
             response.put("success", false);

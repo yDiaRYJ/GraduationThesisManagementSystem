@@ -1,8 +1,10 @@
 package com.controller;
 
+import com.entity.Student;
 import com.entity.Topic;
 import com.entity.User;
 import com.entity.UserAssociation;
+import com.service.StudentStatusService;
 import com.service.TopicService;
 import com.service.UserAssociationService;
 import com.service.UserService;
@@ -25,6 +27,8 @@ public class StudentController {
     private UserAssociationService userAssociationService;
     @Autowired
     private TopicService topicService;
+    @Autowired
+    private StudentStatusService studentStatusService;
 
     @PostMapping("/studentLogin")
     public ResponseEntity<Map<String, Object>> loginStudent(
@@ -44,7 +48,12 @@ public class StudentController {
             } else {
                 if (queryUser.getUserPassword().equals(password)) {
                     response.put("success", true);
-                    response.put("message", queryUser);
+                    response.put("code", 200);
+                    // 获取学生当前状态
+                    int studentStatus = studentStatusService.getStudentStatusByStudentId(userId).getStudentStatus();
+                    // 构造返回值
+                    Student student = new Student(queryUser, studentStatus);
+                    response.put("message", student);
                 } else {
                     response.put("success", false);
                     response.put("message", "wrong password");
@@ -75,6 +84,7 @@ public class StudentController {
         User teacher = getTeacherByStudentId(userId);
         if (teacher != null) {
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", teacher);
         } else {
             response.put("success", false);
@@ -95,6 +105,7 @@ public class StudentController {
             response.put("message", topic);
         } else {
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", topic);
         }
         return ResponseEntity.ok(response);
@@ -118,12 +129,14 @@ public class StudentController {
                 queryTopic.setTopicStatus(1);
                 topicService.updateTopic(queryTopic);
                 response.put("success", true);
+                response.put("code", 200);
                 response.put("message", queryTopic);
             }
         } else {
             Topic topic = new Topic(topicName, topicDescription, userId, getTeacherByStudentId(userId).getUserId(), 1);
             topicService.addTopic(topic);
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", topic);
         }
 

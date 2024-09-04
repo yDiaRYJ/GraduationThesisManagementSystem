@@ -45,6 +45,7 @@ public class TeacherController {
             } else {
                 if (queryUser.getUserPassword().equals(password)) {
                     response.put("success", true);
+                    response.put("code", 200);
                     response.put("message", queryUser);
                 } else {
                     response.put("success", false);
@@ -73,6 +74,7 @@ public class TeacherController {
 
         if (!userList.isEmpty()) {
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", userList);
         } else {
             response.put("success", false);
@@ -101,6 +103,7 @@ public class TeacherController {
             response.put("message", null);
         } else {
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", topicList);
         }
 
@@ -121,6 +124,7 @@ public class TeacherController {
             }
             topicService.updateTopic(topic);
             response.put("success", true);
+            response.put("code", 200);
             response.put("message", topic);
         } else {
             response.put("success", false);
