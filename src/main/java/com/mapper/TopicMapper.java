@@ -15,7 +15,7 @@ public interface TopicMapper {
     Topic getTopicByStudentId(String studentId);
 
     @Select("select * from t_topic where topic_id = #{topicId}")
-    Topic getTopicByTopicId(String topicId);
+    Topic getTopicByTopicId(int topicId);
 
     @Insert("INSERT INTO t_topic (topic_id, topic_name, topic_description, student_id, teacher_id, topic_status) " +
             "VALUES (#{topicId}, #{topicName}, #{topicDescription}, #{studentId}, #{teacherId}, #{topicStatus})")

@@ -11,8 +11,7 @@ public class Doc {
     public Doc() {}
 
     // 带参数的构造函数
-    public Doc(int docId, String userId, String docPath, int docType, int docStatus) {
-        this.docId = docId;
+    public Doc(String userId, String docPath, int docType, int docStatus) {
         this.userId = userId;
         this.docPath = docPath;
         this.docType = docType;

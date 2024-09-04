@@ -17,3 +17,6 @@ spring:
 mybatis:
     configuration:
         map-underscore-to-camel-case: true
+
+upload:
+    dir: D:\et\program\code\web\GraduationThesisManagementSystem\src\main\resources\uploads

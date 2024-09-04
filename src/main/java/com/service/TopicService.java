@@ -20,7 +20,7 @@ public class TopicService {
         return topicMapper.getTopicByStudentId(studentId);
     }
 
-    public Topic getTopicByTopicId(String topicId) {
+    public Topic getTopicByTopicId(int topicId) {
         return topicMapper.getTopicByTopicId(topicId);
     }
     public void addTopic(Topic topic) {
