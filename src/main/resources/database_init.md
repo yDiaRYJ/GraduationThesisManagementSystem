@@ -18,6 +18,7 @@ FOREIGN KEY (user_id) REFERENCES t_user(user_id)
 
 CREATE TABLE t_topic (
 topic_id INT NOT NULL AUTO_INCREMENT,
+topic_name VARCHAR(50) NOT NULL,
 topic_description VARCHAR(200) NOT NULL,
 student_id VARCHAR(30) NOT NULL,
 teacher_id VARCHAR(30) NOT NULL,

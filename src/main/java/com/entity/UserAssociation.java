@@ -8,6 +8,11 @@ public class UserAssociation {
     // 默认构造函数
     public UserAssociation() {}
 
+    public UserAssociation(String studentId, String teacherId) {
+        this.studentId = studentId;
+        this.teacherId = teacherId;
+    }
+
     // 带参数的构造函数
     public UserAssociation(int associationId, String studentId, String teacherId) {
         this.associationId = associationId;

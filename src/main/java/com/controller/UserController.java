@@ -3,9 +3,12 @@ package com.controller;
 import com.entity.User;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -29,5 +32,26 @@ public class UserController {
     @ResponseBody
     public String test(){
         return "test ok!";
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<Map<String, Object>> changePassword(
+            @RequestParam String userId,
+            @RequestParam String oldPassword,
+            @RequestParam String newPassword) {
+        Map<String, Object> response = new HashMap<>();
+
+        User queryUser = userService.getUserById(userId);
+        if (oldPassword.equals(queryUser.getUserPassword())) {
+            queryUser.setUserPassword(newPassword);
+            userService.updateUser(queryUser);
+            response.put("success", true);
+            response.put("message", queryUser);
+        } else {
+            response.put("success", false);
+            response.put("message", "wrong password!");
+        }
+
+        return ResponseEntity.ok(response);
     }
 }

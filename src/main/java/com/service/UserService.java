@@ -18,8 +18,12 @@ public class UserService {
     }
 
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return this.userMapper.getAllUsers();
+    }
+
+    public User getUserById(String userId) {
+        return this.userMapper.getUserById(userId);
     }
 
     public void deleteUser(Integer id){
@@ -29,5 +33,9 @@ public class UserService {
 
     public void addUser(User user) {
         userMapper.insertUser(user);
+    }
+
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
     }
 }
