@@ -133,11 +133,17 @@ public class StudentController {
                 response.put("message", queryTopic);
             }
         } else {
-            Topic topic = new Topic(topicName, topicDescription, userId, getTeacherByStudentId(userId).getUserId(), 1);
-            topicService.addTopic(topic);
-            response.put("success", true);
-            response.put("code", 200);
-            response.put("message", topic);
+            User teacher = getTeacherByStudentId(userId);
+            if (teacher == null){
+                response.put("success", false);
+                response.put("message", "the student dont have a teacher!");
+            } else {
+                Topic topic = new Topic(topicName, topicDescription, userId, teacher.getUserId(), 1);
+                topicService.addTopic(topic);
+                response.put("success", true);
+                response.put("code", 200);
+                response.put("message", topic);
+            }
         }
 
         return ResponseEntity.ok(response);
