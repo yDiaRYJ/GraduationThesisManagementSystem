@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RestController
 @RequestMapping("/teacher")
@@ -30,6 +31,8 @@ public class TeacherController {
     private DocService docService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private DefenseService defenseService;
 
     @PostMapping("/teacherLogin")
     public ResponseEntity<Map<String, Object>> loginTeacher(
@@ -260,6 +263,100 @@ public class TeacherController {
             // 未找到文档
             response.put("success", false);
             response.put("message", "cant see the correct doc!");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/judgeDefense")
+    public ResponseEntity<Map<String, Object>> judgeDefense(@RequestParam String studentId,
+                                                          @RequestParam boolean isPass) {
+        Map<String, Object> response = new HashMap<>();
+
+        Defense defense = defenseService.getDefenseByStudentId(studentId);
+        if (defense != null) {
+            // 找到答辩申请
+            if (isPass) {
+                // 通过
+                // 设置答辩申请状态
+                defense.setDefenseStatus(2);
+            } else {
+                // 未通过
+                defense.setDefenseStatus(3);
+            }
+            defenseService.updateDefenseStatus(defense);
+            response.put("success", true);
+            response.put("code", 200);
+            response.put("message", defense);
+        } else {
+            // 未找到选题
+            response.put("success", false);
+            response.put("message", "wrong student id!");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/arrangeDefense")
+    public ResponseEntity<Map<String, Object>> arrangeDefense(@RequestParam String studentId,
+                                                              @RequestParam String startTimeStr,
+                                                              @RequestParam String endTimeStr) {
+        Map<String, Object> response = new HashMap<>();
+        // 定义时间格式
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        Date startTime;
+        Date endTime;
+        try {
+            // 将字符串转换为Date对象
+            startTime = formatter.parse(startTimeStr);
+            endTime = formatter.parse(endTimeStr);
+        } catch (ParseException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.ok(response);
+        }
+
+        Defense defense = defenseService.getDefenseByStudentId(studentId);
+        if (defense != null) {
+            // 找到答辩申请
+            defense.setDefenseStartTime(startTime);
+            defense.setDefenseEndTime(endTime);
+            defenseService.arrangeDefense(defense);
+            response.put("success", true);
+            response.put("code", 200);
+            response.put("message", defense);
+        } else {
+            // 未找到选题
+            response.put("success", false);
+            response.put("message", "wrong student id!");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/scoreDefense")
+    public ResponseEntity<Map<String, Object>> scoreDefense(@RequestParam String studentId,
+                                                            @RequestParam int score) {
+        Map<String, Object> response = new HashMap<>();
+
+        Defense defense = defenseService.getDefenseByStudentId(studentId);
+        if (defense != null) {
+            // 找到答辩申请
+            // 评分
+            defense.setDefenseScore(score);
+            defenseService.scoreDefense(defense);
+            // 设置学生状态
+            User user = userService.getUserById(studentId);
+            StudentStatus studentStatus = studentStatusService.getStudentStatusByStudentId(user.getUserId());
+            studentStatus.setStudentStatus(8);
+            studentStatusService.updateStudentStatus(studentStatus);
+            response.put("success", true);
+            response.put("code", 200);
+            response.put("message", defense);
+        } else {
+            // 未找到选题
+            response.put("success", false);
+            response.put("message", "wrong student id!");
         }
 
         return ResponseEntity.ok(response);

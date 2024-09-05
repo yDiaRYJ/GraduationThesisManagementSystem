@@ -8,17 +8,15 @@ public class Defense {
     private Date defenseEndTime;
     private int defenseScore;
     private String studentId;
+    private int defenseStatus;
 
     // 默认构造函数
     public Defense() {}
 
     // 带参数的构造函数
-    public Defense(int defenseId, Date defenseStartTime, Date defenseEndTime, int defenseScore, String studentId) {
-        this.defenseId = defenseId;
-        this.defenseStartTime = defenseStartTime;
-        this.defenseEndTime = defenseEndTime;
-        this.defenseScore = defenseScore;
+    public Defense(String studentId, int defenseStatus) {
         this.studentId = studentId;
+        this.defenseStatus = defenseStatus;
     }
 
     // Getter 和 Setter 方法
@@ -62,14 +60,11 @@ public class Defense {
         this.studentId = studentId;
     }
 
-    @Override
-    public String toString() {
-        return "Defense{" +
-                "defenseId=" + defenseId +
-                ", defenseStartTime=" + defenseStartTime +
-                ", defenseEndTime=" + defenseEndTime +
-                ", defenseScore=" + defenseScore +
-                ", studentId='" + studentId + '\'' +
-                '}';
+    public int getDefenseStatus() {
+        return defenseStatus;
+    }
+
+    public void setDefenseStatus(int defenseStatus) {
+        this.defenseStatus = defenseStatus;
     }
 }

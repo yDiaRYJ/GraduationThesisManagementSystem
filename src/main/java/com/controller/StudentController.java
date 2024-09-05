@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,6 +27,8 @@ public class StudentController {
     private FileService fileService;
     @Autowired
     private DocService docService;
+    @Autowired
+    private DefenseService defenseService;
 
 
     @PostMapping("/studentLogin")
@@ -196,6 +195,52 @@ public class StudentController {
             }
         }
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addDefense")
+    public ResponseEntity<Map<String, Object>> addDefense(@RequestParam String studentId) {
+        Map<String, Object> response = new HashMap<>();
+
+        Defense queryDefense = defenseService.getDefenseByStudentId(studentId);
+
+        if (queryDefense != null) {
+            // 已经提交过选题
+            if (queryDefense.getDefenseStatus() == 2) {
+                // 答辩申请已经通过
+                response.put("success", false);
+                response.put("message", "the defense had already been passed");
+            } else {
+                // 答辩未申请通过
+                queryDefense.setDefenseStatus(1);
+                defenseService.updateDefenseStatus(queryDefense);
+                // 构造返回值
+                response.put("success", true);
+                response.put("code", 200);
+                response.put("message", queryDefense);
+            }
+        } else {
+            // 未提交过答辩申请
+            Defense defense = new Defense(studentId, 1);
+            defenseService.insertDefense(defense);
+            // 构造返回值
+            User teacher = getTeacherByStudentId(studentId);
+            response.put("success", true);
+            response.put("code", 200);
+            response.put("message", defense);
+
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/getDefenseInfo")
+    public ResponseEntity<Map<String, Object>> getDefenseInfo(@RequestParam String studentId) {
+        Map<String, Object> response = new HashMap<>();
+        Defense defense = defenseService.getDefenseByStudentId(studentId);
+        response.put("success", true);
+        response.put("code", 200);
+        response.put("message", defense);
         return ResponseEntity.ok(response);
     }
 }
