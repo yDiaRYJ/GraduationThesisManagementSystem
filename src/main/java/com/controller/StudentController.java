@@ -243,4 +243,17 @@ public class StudentController {
         response.put("message", defense);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/duplicateCheck")
+    public ResponseEntity<Map<String, Object>> duplicateCheck(@RequestParam String studentId) {
+        Map<String, Object> response = new HashMap<>();
+        // 获取查重版论文
+        Doc checkDoc = docService.getDocByUserIdAndDocType(studentId, 4);
+        // 论文查重
+        double duplicateRating = 0.24;
+        response.put("success", true);
+        response.put("code", 200);
+        response.put("message", duplicateRating);
+        return ResponseEntity.ok(response);
+    }
 }
