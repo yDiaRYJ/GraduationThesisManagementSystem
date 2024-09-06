@@ -198,6 +198,25 @@ public class StudentController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/getDocInfo")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getDocInfo(@RequestParam String userId,
+                                                          @RequestParam int docType) {
+        Map<String, Object> response = new HashMap<>();
+        Doc doc = docService.getDocByUserIdAndDocType(userId, docType);
+        if (doc != null) {
+            // 文档不为空
+            response.put("success", true);
+            response.put("code", 200);
+            response.put("message", doc);
+        } else {
+            // 文档为空
+            response.put("success", false);
+            response.put("message", "not found file!");
+        }
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/addDefense")
     public ResponseEntity<Map<String, Object>> addDefense(@RequestParam String studentId) {
         Map<String, Object> response = new HashMap<>();
