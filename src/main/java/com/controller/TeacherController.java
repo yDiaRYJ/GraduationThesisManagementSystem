@@ -268,6 +268,33 @@ public class TeacherController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/getStudentsDefenseRequest")
+    public ResponseEntity<Map<String, Object>> getStudentsDefenseRequest(@RequestParam String userId) {
+        Map<String, Object> response = new HashMap<>();
+
+        List<User> studentList = getStudentsByTeacherId(userId);
+
+        List<Defense> defenseList = new ArrayList<>();
+
+        for (User student: studentList) {
+            Defense defense = defenseService.getDefenseByStudentId(student.getUserId());
+            if (defense != null && defense.getDefenseStatus() == 1) {
+                // 只返回申请中的答辩信息
+                defenseList.add(defense);
+            }
+        }
+        if (defenseList.isEmpty()) {
+            response.put("success", false);
+            response.put("message", defenseList);
+        } else {
+            response.put("success", true);
+            response.put("code", 200);
+            response.put("message", defenseList);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/judgeDefense")
     public ResponseEntity<Map<String, Object>> judgeDefense(@RequestParam String studentId,
                                                           @RequestParam boolean isPass) {
