@@ -270,6 +270,12 @@ public class StudentController {
         Doc checkDoc = docService.getDocByUserIdAndDocType(studentId, 4);
         // 论文查重
         double duplicateRating = 0.24;
+        // 设置学生状态
+        User user = userService.getUserById(studentId);
+        StudentStatus studentStatus = studentStatusService.getStudentStatusByStudentId(user.getUserId());
+        studentStatus.setStudentStatus(6);
+        studentStatusService.updateStudentStatus(studentStatus);
+        // 构造返回值
         response.put("success", true);
         response.put("code", 200);
         response.put("message", duplicateRating);
