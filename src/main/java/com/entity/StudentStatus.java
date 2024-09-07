@@ -9,8 +9,7 @@ public class StudentStatus {
     public StudentStatus() {}
 
     // 带参数的构造函数
-    public StudentStatus(int statusId, String studentId, int studentStatus) {
-        this.statusId = statusId;
+    public StudentStatus(String studentId, int studentStatus) {
         this.studentId = studentId;
         this.studentStatus = studentStatus;
     }

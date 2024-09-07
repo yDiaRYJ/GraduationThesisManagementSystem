@@ -30,10 +30,11 @@ FOREIGN KEY (teacher_id) REFERENCES t_user(user_id)
 
 CREATE TABLE t_defense (
 defense_id INT NOT NULL AUTO_INCREMENT,
-defense_startTime DATETIME NOT NULL,
-defense_endTime DATETIME NOT NULL,
+defense_startTime DATETIME,
+defense_endTime DATETIME,
 defense_score INT DEFAULT -1,
 student_id VARCHAR(30) NOT NULL,
+defense_status INT DEFAULT 0,
 PRIMARY KEY (defense_id),
 FOREIGN KEY (student_id) REFERENCES t_user(user_id)
 );

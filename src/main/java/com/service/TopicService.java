@@ -19,4 +19,15 @@ public class TopicService {
     public Topic getTopicByStudentId(String studentId) {
         return topicMapper.getTopicByStudentId(studentId);
     }
+
+    public Topic getTopicByTopicId(int topicId) {
+        return topicMapper.getTopicByTopicId(topicId);
+    }
+    public void addTopic(Topic topic) {
+        topicMapper.insertTopic(topic);
+    }
+
+    public void updateTopic(Topic topic) {
+        topicMapper.updateTopic(topic);
+    }
 }

@@ -2,6 +2,7 @@ package com.entity;
 
 public class Topic {
     private int topicId;
+    private String topicName;
     private String topicDescription;
     private String studentId;
     private String teacherId;
@@ -11,8 +12,8 @@ public class Topic {
     public Topic() {}
 
     // 带参数的构造函数
-    public Topic(int topicId, String topicDescription, String studentId, String teacherId, int topicStatus) {
-        this.topicId = topicId;
+    public Topic(String topicName, String topicDescription, String studentId, String teacherId, int topicStatus) {
+        this.topicName = topicName;
         this.topicDescription = topicDescription;
         this.studentId = studentId;
         this.teacherId = teacherId;
@@ -26,6 +27,14 @@ public class Topic {
 
     public void setTopicId(int topicId) {
         this.topicId = topicId;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 
     public String getTopicDescription() {
